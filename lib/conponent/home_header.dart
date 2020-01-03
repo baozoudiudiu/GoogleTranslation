@@ -103,9 +103,27 @@ class HomeHeaderTile extends StatelessWidget {
                   ],
                 ),
               ),
-              Icon(
-                Icons.arrow_drop_down,
-                color: Theme.of(context).primaryColor,
+              PopupMenuButton(
+                icon: Icon(
+                  Icons.arrow_drop_down,
+                  color: Theme.of(context).primaryColor,
+                ),
+                itemBuilder: (context) {
+                  return [
+                    PopupMenuItem(
+                      value: "en",
+                      child: Text("英语"),
+                    ),
+                    PopupMenuItem(
+                      value: "zh-c",
+                      child: Text("中文(简体)"),
+                    ),
+                    PopupMenuItem(
+                      value: "zh",
+                      child: Text("中文(繁体)"),
+                    ),
+                  ];
+                },
               ),
             ],
           ),
