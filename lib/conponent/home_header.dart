@@ -7,6 +7,10 @@ class HomeHeader extends StatefulWidget {
 }
 
 class _HomeHeaderState extends State<HomeHeader> {
+
+  String _srcString = "英语";
+  String _desString = "中文(简体)";
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,27 +34,37 @@ class _HomeHeaderState extends State<HomeHeader> {
           // 被翻译的语言
           Expanded(
             child: HomeHeaderTile(
-              titleString: "英语",
+              titleString: _srcString,
               mainAxisAlignment: MainAxisAlignment.start,
               wrapAlignment: WrapAlignment.start,
               maxWidth: MediaQuery.of(context).size.width * 0.5 - 40,
+              selectedBlock: (value) {
+                setState(() {
+                  _srcString = value;
+                });
+              },
             ),
           ),
           // 中间的切换按钮
           SizedBox(
             width: 40.0,
             child: Icon(
-              Icons.track_changes,
+              Icons.exposure,
               color: Theme.of(context).primaryColor,
             ),
           ),
           // 翻译成的目标语言
           Expanded(
             child: HomeHeaderTile(
-              titleString: "中文(简体)",
+              titleString: _desString,
               mainAxisAlignment: MainAxisAlignment.end,
               wrapAlignment: WrapAlignment.end,
               maxWidth: MediaQuery.of(context).size.width * 0.5 - 40,
+              selectedBlock: (value) {
+                setState(() {
+                  _desString = value;
+                });
+              },
             ),
           ),
         ],
@@ -64,13 +78,15 @@ class HomeHeaderTile extends StatelessWidget {
   final MainAxisAlignment mainAxisAlignment;
   final WrapAlignment wrapAlignment;
   final double maxWidth;
-
+  final void Function(String) selectedBlock;
+ 
   const HomeHeaderTile({
     Key key,
     @required this.titleString,
     @required this.mainAxisAlignment,
     @required this.wrapAlignment,
     @required this.maxWidth,
+    this.selectedBlock,
   }) : super(key: key);
 
   @override
@@ -111,18 +127,24 @@ class HomeHeaderTile extends StatelessWidget {
                 itemBuilder: (context) {
                   return [
                     PopupMenuItem(
-                      value: "en",
+                      value: "英语",
                       child: Text("英语"),
                     ),
                     PopupMenuItem(
-                      value: "zh-c",
+                      value: "中文(简体)",
                       child: Text("中文(简体)"),
                     ),
                     PopupMenuItem(
-                      value: "zh",
+                      value: "中文(繁体)",
                       child: Text("中文(繁体)"),
                     ),
                   ];
+                },
+                onSelected: (value) {
+                  if(null != this.selectedBlock)
+                  {
+                    this.selectedBlock(value);
+                  }
                 },
               ),
             ],
